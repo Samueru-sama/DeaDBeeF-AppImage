@@ -1,5 +1,5 @@
 # DeaDBeeF-AppImage
-Unofficial AppImage for the deadbeef music player: 
+Unofficial AppImage of the deadbeef music player: 
 
 https://github.com/DeaDBeeF-Player/deadbeef
 
