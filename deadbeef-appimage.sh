@@ -98,6 +98,10 @@ chmod a+x ./appimagetool
 ARCH=x86_64 VERSION=$(./appimagetool -v | grep -o '[[:digit:]]*') ./appimagetool -s ./$APP.AppDir &&
 ls ./*.AppImage || { echo "appimagetool failed to make the appimage"; exit 1; }
 
+VERSION=$(wget -q https://sourceforge.net/projects/deadbeef/files/travis/linux/master/ -O - | grep "UTC" | awk -F \" '{print $NF}' | sed 's/[><]/ /g' | awk 'NF {print $1; exit}')
+NAME=$(ls *AppImage)
+mv ./*AppImage ./"$VERSION"-"$NAME"
+
 # Clean up
 if [ -z "$APP" ]; then exit 1; fi # Being extra safe lol
 rm -rf "./$APP.AppDir"
