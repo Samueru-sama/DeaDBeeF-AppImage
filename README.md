@@ -1,7 +1,5 @@
 # DeaDBeeF-AppImage
-Unofficial AppImage of the deadbeef music player: 
+Unofficial AppImage of the deadbeef music player: https://github.com/DeaDBeeF-Player/deadbeef
 
-https://github.com/DeaDBeeF-Player/deadbeef
-
-Uses the portable Nightly Build of DeaDBeeF from here: https://sourceforge.net/projects/deadbeef/files/travis/linux/master/
+Uses the portable Nightly Build of DeaDBeeF from here and turns it into an AppImage: https://sourceforge.net/projects/deadbeef/files/travis/linux/master/
 
