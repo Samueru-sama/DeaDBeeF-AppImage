@@ -32,6 +32,7 @@ jobs:
         sudo apt install libfuse2
         wget https://raw.githubusercontent.com/Samueru-sama/deadbeef-appimage/main/deadbeef-appimage.sh
         chmod a+x ./deadbeef-appimage.sh
-        ./gimp-junest.sh
+        ./deadbeef-appimage.sh
+        cd deadbeef
         mkdir dist
         mv *AppImage dist/
