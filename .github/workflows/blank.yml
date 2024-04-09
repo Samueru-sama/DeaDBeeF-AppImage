@@ -48,5 +48,5 @@ jobs:
             prerelease: false
             draft: false
             files: |
-              SAMPLE-x86_64.AppImage
+              DeaDBeeF-x86_64.AppImage
             repo_token: ${{ secrets.GITHUB_TOKEN }}
