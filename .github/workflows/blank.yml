@@ -38,12 +38,12 @@ jobs:
       steps:
         - uses: actions/download-artifact@v1
           with:
-            name: SAMPLE-x86_64.AppImage
+            name: DeaDBeeF-x86_64.AppImage
 
         - name: release
           uses: marvinpinto/action-automatic-releases@latest
           with:
-            title: Continuous build (JuNest Arch Linux-based AppImage)
+            title: Continuous build
             automatic_release_tag: continuous
             prerelease: false
             draft: false
