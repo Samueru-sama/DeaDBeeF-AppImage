@@ -102,4 +102,5 @@ ls ./*.AppImage || { echo "appimagetool failed to make the appimage"; exit 1; }
 if [ -z "$APP" ]; then exit 1; fi # Being extra safe lol
 rm -rf "./$APP.AppDir"
 rm ./appimagetool
+mv ./*.AppImage ..
 echo "All Done!"
