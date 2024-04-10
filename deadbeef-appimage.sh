@@ -98,7 +98,7 @@ chmod a+x ./appimagetool
 ARCH=x86_64 VERSION=$(./appimagetool -v | grep -o '[[:digit:]]*') ./appimagetool -s ./$APP.AppDir &&
 ls ./*.AppImage || { echo "appimagetool failed to make the appimage"; exit 1; }
 
-VERSION=$(wget -q https://sourceforge.net/projects/deadbeef/files/travis/linux/master/ -O - | grep "UTC" | awk -F \" '{print $NF}' | sed 's/[><]/ /g' | awk 'NF {print $1; exit}')
+VERSION=$(wget -q https://sourceforge.net/projects/deadbeef/files/travis/linux/master/ -O - | sed 's/"/ /g' | grep "files_date" | grep -o "[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" | head -1)
 NAME=$(ls *AppImage)
 mv ./*AppImage ./"$VERSION"-"$NAME"
 
