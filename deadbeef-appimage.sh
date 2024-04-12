@@ -9,7 +9,7 @@ mkdir -p "./$APP/tmp" && cd "./$APP/tmp" || exit 1
 
 # DOWNLOAD THE ARCHIVE
 version=$(wget -q "$SITE" -O - | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u | grep "x86_64.tar.bz2")
-wget $version -O download.tar.bz2 && echo "$version" >> ./version
+wget $version -O download.tar.bz2
 tar fx ./*tar* || exit 1
 cd ..
 mkdir "./$APP.AppDir" && mv --backup=t ./tmp/*/* ./$APP.AppDir
