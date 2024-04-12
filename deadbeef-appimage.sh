@@ -19,6 +19,7 @@ cd ./$APP.AppDir || exit 1
 DESKTOP="https://raw.githubusercontent.com/DeaDBeeF-Player/deadbeef/master/deadbeef.desktop.in"
 ICON="https://raw.githubusercontent.com/DeaDBeeF-Player/deadbeef/master/icons/scalable/deadbeef.svg"
 wget $DESKTOP -O ./$APP.desktop && wget $ICON -O ./deadbeef.svg 2> /dev/null && ln -s ./deadbeef.svg ./.DirIcon && rm ./deadbeef.png && ln -s ./deadbeef.svg ./deadbeef.png
+sed -i 's/DeaDBeeF/DeaDBeeF Nightly/g' ./$APP.desktop
 
 # AppRun
 cat >> ./AppRun << 'EOF'
