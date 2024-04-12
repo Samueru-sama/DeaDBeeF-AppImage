@@ -1,7 +1,7 @@
 # DeaDBeeF-AppImage
-Unofficial AppImage of the deadbeef music player: https://github.com/DeaDBeeF-Player/deadbeef
+Unofficial AppImage of the DeaDBeeF music player: https://github.com/DeaDBeeF-Player/deadbeef
 
-Uses the portable Build of DeaDBeeF from here and turns it into an AppImage: https://sourceforge.net/projects/deadbeef/files/travis/linux/
+Uses the portable builds of DeaDBeeF from here and turns them into an AppImages: https://sourceforge.net/projects/deadbeef/files/travis/linux/
 
 You can also run the `deadbeef-appimage.sh` or `deadbeef-stable-appimage.sh` script in your machine to make the AppImage.
 
