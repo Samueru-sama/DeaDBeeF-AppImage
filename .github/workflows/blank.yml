@@ -21,6 +21,7 @@ jobs:
         wget https://raw.githubusercontent.com/Samueru-sama/deadbeef-appimage/main/deadbeef-appimage.sh
         chmod a+x ./deadbeef-appimage.sh
         ./deadbeef-appimage.sh
+        ./deadbeef-stable-appimage.sh
         mkdir dist
         mv *AppImage dist/
 
