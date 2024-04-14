@@ -12,20 +12,20 @@ version=$(wget -q "$SITE" -O - | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" 
 wget $version -O download.tar.bz2
 tar fx ./*tar* || exit 1
 cd ..
-mkdir "./$APP.AppDir" && mv --backup=t ./tmp/*/* ./$APP.AppDir
+mkdir -p "./$APP.AppDir/usr/bin" && mv --backup=t ./tmp/*/* "./$APP.AppDir/usr/bin"
 cd ./$APP.AppDir || exit 1
 
 # DESKTOP ENTRY AND ICON
 DESKTOP="https://raw.githubusercontent.com/DeaDBeeF-Player/deadbeef/master/deadbeef.desktop.in"
 ICON="https://raw.githubusercontent.com/DeaDBeeF-Player/deadbeef/master/icons/scalable/deadbeef.svg"
-wget $DESKTOP -O ./$APP.desktop && wget $ICON -O ./deadbeef.svg 2> /dev/null && ln -s ./deadbeef.svg ./.DirIcon && rm ./deadbeef.png && ln -s ./deadbeef.svg ./deadbeef.png
+wget $DESKTOP -O ./$APP.desktop && wget $ICON -O ./deadbeef.svg && ln -s ./deadbeef.svg ./.DirIcon
 sed -i 's/DeaDBeeF/DeaDBeeF Nightly/g' ./$APP.desktop
 
 # AppRun
 cat >> ./AppRun << 'EOF'
 #!/bin/sh
 CURRENTDIR="$(readlink -f "$(dirname "$0")")"
-exec "$CURRENTDIR"/deadbeef "$@"
+exec "$CURRENTDIR"/usr/bin/deadbeef "$@"
 EOF
 chmod a+x ./AppRun
 
