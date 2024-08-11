@@ -17,7 +17,7 @@ jobs:
     - name: build
       run: |
         sudo apt update
-        sudo apt install libfuse2
+        sudo apt install libfuse2 desktop-file-utils
         wget https://raw.githubusercontent.com/Samueru-sama/deadbeef-appimage/main/deadbeef-appimage.sh
         wget https://raw.githubusercontent.com/Samueru-sama/deadbeef-appimage/main/deadbeef-stable-appimage.sh
         chmod a+x ./deadbeef-appimage.sh ./deadbeef-stable-appimage.sh
