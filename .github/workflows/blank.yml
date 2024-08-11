@@ -24,7 +24,7 @@ jobs:
         ./deadbeef-appimage.sh
         ./deadbeef-stable-appimage.sh
         mkdir dist
-        mv *AppImage dist/
+        mv *AppImage* dist/
 
     - name: Upload artifact
       uses: actions/upload-artifact@v1.0.0
