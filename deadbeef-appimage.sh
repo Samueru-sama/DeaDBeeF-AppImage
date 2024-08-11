@@ -31,16 +31,15 @@ chmod a+x ./AppRun
 
 # MAKE APPIMAGE
 cd ..
-APPIMAGETOOL=$(wget -q https://api.github.com/repos/probonopd/go-appimage/releases -O - | sed 's/"/ /g; s/ /\n/g' | grep -o 'https.*continuous.*tool.*86_64.*mage$')
+APPIMAGETOOL="https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
 wget -q "$APPIMAGETOOL" -O ./appimagetool
 chmod a+x ./appimagetool
 
 # Do the thing!
-ARCH=x86_64 VERSION=$(./appimagetool -v | grep -o '[[:digit:]]*') ./appimagetool -s ./$APP.AppDir && 
-ls ./*.AppImage || { echo "appimagetool failed to make the appimage"; exit 1; }
-APPNAME=$(ls *AppImage)
-APPVERSION=$(wget -q "$SITE" -O - | sed 's/"/ /g' | grep "files_date" | grep -o "[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" | head -1)
-mv ./*AppImage ./"$APPVERSION"-"$APPNAME"
-if [ -z "$APP" ]; then exit 1; fi # Being extra safe lol
-mv ./*.AppImage .. && cd .. && rm -rf "./$APP"
+export ARCH=x86_64 
+export VERSION=$(wget -q "$SITE" -O - | sed 's/"/ /g' | grep "files_date" | grep -o "[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" | head -1)
+./appimagetool --comp zstd --mksquashfs-opt -Xcompression-level --mksquashfs-opt 20 \
+  -u "gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|Ryujinx-AppImage|continuous|*x86_64.AppImage.zsync" \
+  ./"$APP".AppDir Ryujinx-"$VERSION"-"$ARCH".AppImage 
+[ -n "$APP" ] && mv ./*.AppImage* .. && cd .. && rm -rf ./"$APP" || exit 1
 echo "All Done!"
