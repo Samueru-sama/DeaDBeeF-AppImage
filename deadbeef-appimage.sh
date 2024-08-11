@@ -39,7 +39,7 @@ chmod a+x ./appimagetool
 export ARCH=x86_64 
 export VERSION=$(wget -q "$SITE" -O - | sed 's/"/ /g' | grep "files_date" | grep -o "[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" | head -1)
 ./appimagetool --comp zstd --mksquashfs-opt -Xcompression-level --mksquashfs-opt 20 \
-  -u "gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|DeaDBeeF-AppImage|continuous|*$ARCH.AppImage.zsync" \
-  ./"$APP".AppDir DeaDBeeF-"$VERSION"-"$ARCH".AppImage 
+  -u "gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|DeaDBeeF-AppImage|continuous|Nightly*$ARCH.AppImage.zsync" \
+  ./"$APP".AppDir DeaDBeeF_Nightly-"$VERSION"-"$ARCH".AppImage 
 [ -n "$APP" ] && mv ./*.AppImage* .. && cd .. && rm -rf ./"$APP" || exit 1
 echo "All Done!"
