@@ -27,7 +27,7 @@ jobs:
         mv *AppImage* dist/
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v1.0.0
+      uses: actions/upload-artifact@v3
       with:
         name: DeaDBeeF-x86_64.AppImage
         path: 'dist'
@@ -38,7 +38,7 @@ jobs:
       runs-on: ubuntu-latest
 
       steps:
-        - uses: actions/download-artifact@v1
+        - uses: actions/download-artifact@v3
           with:
             name: DeaDBeeF-x86_64.AppImage
 
@@ -50,5 +50,5 @@ jobs:
             prerelease: false
             draft: false
             files: |
-              DeaDBeeF-x86_64.AppImage
+              *.AppImage*
             repo_token: ${{ secrets.GITHUB_TOKEN }}
