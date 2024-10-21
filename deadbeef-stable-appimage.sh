@@ -1,16 +1,14 @@
 #!/bin/sh
 
+set -u
 APP=deadbeef-stable
-SITE=$(wget -q https://sourceforge.net/projects/deadbeef/files/travis/linux/ -O - | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | grep download | grep -vE 'master|feature' | head -1 | sed 's/download//g')
-
-# Create folders
-if [ -z "$APP" ]; then exit 1; fi
-mkdir -p "./$APP/tmp" && cd "./$APP/tmp" || exit 1
+SITE=$(wget -q https://sourceforge.net/projects/deadbeef/files/travis/linux/ -O - \
+  | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | grep download | grep -vE 'master|feature|bugfix' | head -1 | sed 's/download//g')
 
 # DOWNLOAD THE ARCHIVE
+mkdir -p "./$APP/tmp" && cd "./$APP/tmp" || exit 1
 version=$(wget -q "$SITE" -O - | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u | grep "x86_64.tar.bz2")
-wget $version -O download.tar.bz2
-tar fx ./*tar* || exit 1
+wget $version -O download.tar.bz2 && tar fx ./*tar* || exit 1
 cd ..
 mkdir -p "./$APP.AppDir/usr/bin" && mv --backup=t ./tmp/*/* "./$APP.AppDir/usr/bin"
 cd ./$APP.AppDir || exit 1
