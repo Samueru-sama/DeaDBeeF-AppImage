@@ -34,7 +34,7 @@ chmod a+x ./appimagetool
 
 # Do the thing!
 export ARCH=x86_64 
-export VERSION=$(wget -q "$SITE" -O - | sed 's/"/ /g' | grep "files_date" | grep -o "[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" | head -1)
+export VERSION="$(echo $version | awk -F"_" '{print $2}')"
 ./appimagetool --comp zstd --mksquashfs-opt -Xcompression-level --mksquashfs-opt 20 \
   -u "gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|DeaDBeeF-AppImage|continuous|*Stable*$ARCH.AppImage.zsync" \
   ./"$APP".AppDir DeaDBeeF_Stable-"$VERSION"-"$ARCH".AppImage 
