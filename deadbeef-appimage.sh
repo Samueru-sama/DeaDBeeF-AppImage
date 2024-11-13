@@ -33,7 +33,7 @@ sed -i 's/DeaDBeeF/DeaDBeeF Nightly/g' ./"$APP".desktop
 cp ./"$APP".desktop ./usr/share/applications
 
 # Deploy all libs
-cp -vn /usr/lib/libgtk-* ./usr/lib
+cp -vn /usr/lib/x86_64-linux-gnu/libgtk-* ./usr/lib
 ldd ./usr/lib/* | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./usr/lib
 ldd ./usr/bin/deadbeef | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./usr/lib
 
@@ -41,7 +41,7 @@ cp -vn /lib64/ld-linux-x86-64.so.2 ./usr/lib
 
 # DEPLOY GDK
 echo "Deploying gdk..."
-GDK_PATH="$(find /usr/lib -type d -regex ".*/gdk-pixbuf-2.0" -print -quit)"
+GDK_PATH="$(find /usr -type d -regex ".*/gdk-pixbuf-2.0" -print -quit)"
 cp -rv "$GDK_PATH" ./usr/lib
 
 echo "Deploying gdk deps..."
