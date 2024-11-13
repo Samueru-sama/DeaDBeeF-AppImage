@@ -50,6 +50,8 @@ find ./usr/lib/gdk-pixbuf-2.0 -type f -name '*.so*' -exec ldd {} \; \
 find ./usr/lib -type f -regex '.*gdk.*loaders.cache' \
 	-exec sed -i 's|/.*lib.*/gdk-pixbuf.*/.*/loaders/||g' {} \;
 
+( cd ./usr/lib && ln -s ./gdk-pixbuf*/*/loaders/* ./ )
+
 # Create AppRun
 echo '#!/bin/sh
 CURRENTDIR="$(readlink -f "$(dirname "$0")")"
