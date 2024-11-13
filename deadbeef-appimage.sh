@@ -38,7 +38,7 @@ cp ./"$APP".desktop ./usr/share/applications
 find . -type f -iname '*GTK2*' -delete
 wget "$LIB4BN" -O ./lib4bin
 chmod +x ./lib4bin
-./lib4bin -v -r -w ./shared/bin/"$TARGET_BIN"
+./lib4bin -v -r -w ./shared/bin/"$TARGET_BIN" ./shared/bin/lib/*
 
 ln ./sharun ./AppRun
 ./sharun -g
@@ -48,11 +48,11 @@ echo "Deploying gdk..."
 GDK_PATH="$(find /usr/lib -type d -regex ".*/gdk-pixbuf-2.0" -print -quit)"
 cp -rv "$GDK_PATH" ./shared/lib
 
-echo "Deploying gdk deps..."
-find ./shared/lib/gdk-pixbuf-2.0 -type f -name '*.so*' -exec ldd {} \; \
-	| awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./shared/lib
-find ./shared/lib -type f -regex '.*gdk.*loaders.cache' \
-	-exec sed -i 's|/.*lib.*/gdk-pixbuf.*/.*/loaders/||g' {} \;
+#echo "Deploying gdk deps..."
+#find ./shared/lib/gdk-pixbuf-2.0 -type f -name '*.so*' -exec ldd {} \; \
+#	| awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./shared/lib
+#find ./shared/lib -type f -regex '.*gdk.*loaders.cache' \
+#	-exec sed -i 's|/.*lib.*/gdk-pixbuf.*/.*/loaders/||g' {} \;
 
 # Strip everything
 find ./shared -type f -exec strip -s -R .comment --strip-unneeded {} ';'
