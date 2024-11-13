@@ -11,13 +11,19 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container: artixlinux/artixlinux:latest
     steps:
     - uses: actions/checkout@v4
 
     - name: build
       run: |
-        sudo apt update
-        sudo apt install libfuse2 desktop-file-utils zsync libgtk-3-0
+        pacman -Syu --noconfirm base-devel curl desktop-file-utils git wget \
+          base-devel patchelf gtk3 strace
+
+        # Artix repos don't have zsyc
+        wget https://london.mirror.pkgbuild.com/extra/os/x86_64/zsync-0.6.2-5-x86_64.pkg.tar.zst
+        pacman -U --noconfirm ./zsync-0.6.2-5-x86_64.pkg.tar.zst
+
         chmod a+x ./deadbeef-appimage.sh ./deadbeef-stable-appimage.sh
         ./deadbeef-appimage.sh
         ./deadbeef-stable-appimage.sh
