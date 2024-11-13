@@ -36,6 +36,7 @@ cp ./"$APP".desktop ./usr/share/applications
 cp -vn /usr/lib/libgtk-* ./usr/lib
 ldd ./usr/lib/* | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./usr/lib
 ldd ./usr/bin/deadbeef | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./usr/lib
+ldd ./usr/bin/plugins/* | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./usr/lib || true
 
 cp -vn /lib64/ld-linux-x86-64.so.2 ./usr/lib
 
