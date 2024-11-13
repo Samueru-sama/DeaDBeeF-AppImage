@@ -38,9 +38,11 @@ cp ./"$APP".desktop ./usr/share/applications
 find . -type f -iname '*GTK2*' -delete
 wget "$LIB4BN" -O ./lib4bin
 chmod +x ./lib4bin
-./lib4bin -v -r -w ./shared/bin/"$TARGET_BIN" ./shared/bin/lib/*
+./lib4bin -v -r -w ./shared/bin/"$TARGET_BIN"
 
 ln ./sharun ./AppRun
+find ./shared/lib -type f -name '*.so*' -exec ldd {} \; \
+	| awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./shared/lib
 ./sharun -g
 
 # DEPLOY GDK
