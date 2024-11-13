@@ -53,6 +53,12 @@ find ./usr/lib -type f -regex '.*gdk.*loaders.cache' \
 # Create AppRun
 echo '#!/bin/sh
 CURRENTDIR="$(readlink -f "$(dirname "$0")")"
+GDK_HERE="$(find "$CURRENTDIR" -type d -regex '.*gdk.*loaders' -print -quit)"
+GDK_LOADER="$(find "$CURRENTDIR" -type f -regex '.*gdk.*loaders.cache' -print -quit)"
+
+export GDK_PIXBUF_MODULEDIR="$GDK_HERE"
+export GDK_PIXBUF_MODULE_FILE="$GDK_LOADER"
+
 exec "$CURRENTDIR"/usr/lib/ld-linux-x86-64.so.2 \
 	--library-path "$CURRENTDIR"/usr/lib \
 	"$CURRENTDIR"/usr/bin/deadbeef "$@"' > ./AppRun
