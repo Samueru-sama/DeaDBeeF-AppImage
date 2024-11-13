@@ -44,9 +44,9 @@ ln ./sharun ./AppRun
 ./sharun -g
 
 # DEPLOY GDK
-echo "Deploying gdk..."
-GDK_PATH="$(find /usr/lib -type d -regex ".*/gdk-pixbuf-2.0" -print -quit)"
-cp -rv "$GDK_PATH" ./shared/lib
+#echo "Deploying gdk..."
+#GDK_PATH="$(find /usr/lib -type d -regex ".*/gdk-pixbuf-2.0" -print -quit)"
+#cp -rv "$GDK_PATH" ./shared/lib
 
 #echo "Deploying gdk deps..."
 #find ./shared/lib/gdk-pixbuf-2.0 -type f -name '*.so*' -exec ldd {} \; \
