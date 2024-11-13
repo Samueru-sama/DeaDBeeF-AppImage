@@ -18,7 +18,7 @@ jobs:
     - name: build
       run: |
         pacman -Syu --noconfirm base-devel curl desktop-file-utils git wget \
-          base-devel patchelf gtk3 strace pipewire pipewire-pulse pipewire-alsa
+          base-devel patchelf gtk3 strace pulseaudio pulseaudio-alsa
 
         # Artix repos don't have zsyc
         wget https://london.mirror.pkgbuild.com/extra/os/x86_64/zsync-0.6.2-5-x86_64.pkg.tar.zst
