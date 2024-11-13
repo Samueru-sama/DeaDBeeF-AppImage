@@ -1,42 +1,76 @@
 #!/bin/sh
 
-set -u
-APP=deadbeef-stable
-SITE=$(wget -q https://sourceforge.net/projects/deadbeef/files/travis/linux/ -O - \
-  | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | grep download | grep -vE 'master|feature|bugfix' | head -1 | sed 's/download//g')
+set -eu
 
-# DOWNLOAD THE ARCHIVE
-mkdir -p "./$APP/tmp" && cd "./$APP/tmp" || exit 1
-version=$(wget -q "$SITE" -O - | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u | grep "x86_64.tar.bz2")
-wget $version -O download.tar.bz2 && tar fx ./*tar* || exit 1
-cd ..
-mkdir -p "./$APP.AppDir/usr/bin" && mv --backup=t ./tmp/*/* "./$APP.AppDir/usr/bin"
-cd ./$APP.AppDir || exit 1
-
-# DESKTOP ENTRY AND ICON
+APP=DeaDBeeF_Nightly
+SITE="$(wget -q https://sourceforge.net/projects/deadbeef/files/travis/linux/ -O - \
+  | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | grep download | grep -vE 'master|feature|bugfix' | head -1 | sed 's/download//g')"
+TARGET_BIN="deadbeef"
 DESKTOP="https://raw.githubusercontent.com/DeaDBeeF-Player/deadbeef/master/deadbeef.desktop.in"
 ICON="https://raw.githubusercontent.com/DeaDBeeF-Player/deadbeef/master/icons/scalable/deadbeef.svg"
-wget $DESKTOP -O ./$APP.desktop && wget $ICON -O ./deadbeef.svg && ln -s deadbeef.svg ./.DirIcon
 
-# AppRun
-cat >> ./AppRun << 'EOF'
-#!/bin/sh
+export ARCH="$(uname -m)"
+export APPIMAGE_EXTRACT_AND_RUN=1
+
+APPIMAGETOOL="https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$ARCH.AppImage"
+UPINFO="gh-releases-zsync|$(echo $GITHUB_REPOSITORY | tr '/' '|')|continuous|*$ARCH.AppImage.zsync"
+LIB4BN="https://raw.githubusercontent.com/VHSgunzo/sharun/refs/heads/main/lib4bin"
+
+# Prepare AppDir
+mkdir -p "$APP"/AppDir/usr/share/applications
+cd "$APP"/AppDir
+url="$(wget -q "$SITE" -O - | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | sort -u | grep "x86_64.tar.bz2")"
+wget $url -O download.tar.bz2
+tar fx ./*.tar*
+rm -f ./*.tar*
+
+mv ./deadbeef* ./usr/bin
+mv ./usr/bin/lib ./usr/lib
+
+wget "$DESKTOP" -O ./"$APP".desktop
+wget "$ICON" -O ./deadbeef.svg
+export VERSION="$(echo "$url" | awk -F"_" '{print $2}')"
+cp ./"$APP".desktop ./usr/share/applications
+
+# Deploy all libs
+cp -vn /usr/lib/libgtk-* ./usr/lib
+ldd ./usr/lib/* | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./usr/lib
+ldd ./usr/bin/deadbeef | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./usr/lib
+
+cp -vn /lib64/ld-linux-x86-64.so.2 ./usr/lib
+
+# DEPLOY GDK
+echo "Deploying gdk..."
+GDK_PATH="$(find /usr/lib -type d -regex ".*/gdk-pixbuf-2.0" -print -quit)"
+cp -rv "$GDK_PATH" ./usr/lib
+
+echo "Deploying gdk deps..."
+find ./usr/lib/gdk-pixbuf-2.0 -type f -name '*.so*' -exec ldd {} \; \
+	| awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./usr/lib
+find ./usr/lib -type f -regex '.*gdk.*loaders.cache' \
+	-exec sed -i 's|/.*lib.*/gdk-pixbuf.*/.*/loaders/||g' {} \;
+
+# Create AppRun
+echo '#!/bin/sh
 CURRENTDIR="$(readlink -f "$(dirname "$0")")"
-exec "$CURRENTDIR"/usr/bin/deadbeef "$@"
-EOF
-chmod a+x ./AppRun
+exec "$CURRENTDIR"/usr/lib/ld-linux-x86-64.so.2 \
+	--library-path "$CURRENTDIR"/usr/lib \
+	"$CURRENTDIR"/usr/bin/deadbeef "$@"' > ./AppRun
+chmod +x ./AppRun
 
-# MAKE APPIMAGE
+# Strip everything
+find ./usr -type f -exec strip -s -R .comment --strip-unneeded {} ';'
+
+# MAKE APPIAMGE WITH FUSE3 COMPATIBLE APPIMAGETOOL
 cd ..
-APPIMAGETOOL="https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage"
 wget -q "$APPIMAGETOOL" -O ./appimagetool
-chmod a+x ./appimagetool
+chmod +x ./appimagetool
 
-# Do the thing!
-export ARCH=x86_64 
-export VERSION="$(echo $version | awk -F"_" '{print $2}')"
-./appimagetool --comp zstd --mksquashfs-opt -Xcompression-level --mksquashfs-opt 20 \
-  -u "gh-releases-zsync|$GITHUB_REPOSITORY_OWNER|DeaDBeeF-AppImage|continuous|*Stable*$ARCH.AppImage.zsync" \
-  ./"$APP".AppDir DeaDBeeF_Stable-"$VERSION"-"$ARCH".AppImage 
-[ -n "$APP" ] && mv ./*.AppImage* .. && cd .. && rm -rf ./"$APP" || exit 1
+./appimagetool --comp zstd \
+	--mksquashfs-opt -Xcompression-level --mksquashfs-opt 22 \
+	-n -u "$UPINFO" "$PWD"/AppDir "$PWD"/"$APP"-"$VERSION"-"$ARCH".AppImage
+
+mv ./*.AppImage* ../
+cd ..
+#rm -rf ./"$APP"
 echo "All Done!"
