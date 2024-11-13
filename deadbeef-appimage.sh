@@ -33,7 +33,7 @@ sed -i 's/DeaDBeeF/DeaDBeeF Nightly/g' ./"$APP".desktop
 cp ./"$APP".desktop ./usr/share/applications
 
 # Deploy all libs
-cp -vn /usr/lib/x86_64-linux-gnu/libgtk-* ./usr/lib
+cp -vn /usr/lib/x86_64-linux-gnu/libgtk-* ./usr/lib || true
 ldd ./usr/lib/* | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./usr/lib
 ldd ./usr/bin/deadbeef | awk -F"[> ]" '{print $4}' | xargs -I {} cp -vn {} ./usr/lib
 
