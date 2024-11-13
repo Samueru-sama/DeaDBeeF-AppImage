@@ -24,12 +24,11 @@ jobs:
         wget https://london.mirror.pkgbuild.com/extra/os/x86_64/zsync-0.6.2-5-x86_64.pkg.tar.zst
         pacman -U --noconfirm ./zsync-0.6.2-5-x86_64.pkg.tar.zst
 
-        export APPIMAGE_EXTRACT_AND_RUN=1
-        chmod a+x ./deadbeef-appimage.sh ./deadbeef-stable-appimage.sh
-        ./deadbeef-appimage.sh
+        chmod a+x ./*-appimage.sh
+        ./deadbeef-nightly-appimage.sh
         ./deadbeef-stable-appimage.sh
         mkdir dist
-        mv *AppImage* dist/
+        mv *.AppImage* dist/
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
