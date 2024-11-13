@@ -2,7 +2,7 @@
 
 set -eu
 
-APP=DeaDBeeF
+APP=DeaDBeeF_Nightly
 SITE="https://sourceforge.net/projects/deadbeef/files/travis/linux/master"
 TARGET_BIN="deadbeef"
 DESKTOP="https://raw.githubusercontent.com/DeaDBeeF-Player/deadbeef/master/deadbeef.desktop.in"
