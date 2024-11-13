@@ -81,5 +81,5 @@ chmod +x ./appimagetool
 
 mv ./*.AppImage* ../
 cd ..
-#rm -rf ./"$APP"
+rm -rf ./"$APP"
 echo "All Done!"
