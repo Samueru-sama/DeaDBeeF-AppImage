@@ -12,14 +12,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: build
       run: |
         sudo apt update
-        sudo apt install libfuse2 desktop-file-utils
-        wget https://raw.githubusercontent.com/Samueru-sama/deadbeef-appimage/main/deadbeef-appimage.sh
-        wget https://raw.githubusercontent.com/Samueru-sama/deadbeef-appimage/main/deadbeef-stable-appimage.sh
+        sudo apt install libfuse2 desktop-file-utils zsync
         chmod a+x ./deadbeef-appimage.sh ./deadbeef-stable-appimage.sh
         ./deadbeef-appimage.sh
         ./deadbeef-stable-appimage.sh
@@ -46,9 +44,9 @@ jobs:
           uses: marvinpinto/action-automatic-releases@latest
           with:
             title: Continuous build
-            automatic_release_tag: continuous
+            automatic_release_tag: test
             prerelease: false
-            draft: false
+            draft: true
             files: |
               *.AppImage*
             repo_token: ${{ secrets.GITHUB_TOKEN }}
