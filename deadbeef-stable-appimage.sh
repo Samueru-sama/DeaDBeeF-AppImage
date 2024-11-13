@@ -2,7 +2,7 @@
 
 set -eu
 
-APP=DeaDBeeF_Nightly
+APP=DeaDBeeF
 SITE="$(wget -q https://sourceforge.net/projects/deadbeef/files/travis/linux/ -O - \
   | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | grep download | grep -vE 'master|feature|bugfix' | head -1 | sed 's/download//g')"
 TARGET_BIN="deadbeef"
