@@ -2,15 +2,15 @@
 
 set -eu
 
-APP=DeaDBeeF
-SITE="$(wget -q https://sourceforge.net/projects/deadbeef/files/travis/linux/ -O - \
-  | grep -Eo "(http|https)://[a-zA-Z0-9./?=_%:-]*" | grep download | grep -vE 'master|feature|bugfix' | head -1 | sed 's/download//g')"
+APP=DeaDBeeF_Nightly
+SITE="https://sourceforge.net/projects/deadbeef/files/travis/linux/master"
 TARGET_BIN="deadbeef"
 DESKTOP="https://raw.githubusercontent.com/DeaDBeeF-Player/deadbeef/master/deadbeef.desktop.in"
 ICON="https://raw.githubusercontent.com/DeaDBeeF-Player/deadbeef/master/icons/scalable/deadbeef.svg"
 
 export ARCH="$(uname -m)"
 export APPIMAGE_EXTRACT_AND_RUN=1
+export VERSION=$(wget -q "$SITE" -O - | sed 's/"/ /g' | grep "files_date" | grep -o "[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}" | head -1)
 
 APPIMAGETOOL="https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-$ARCH.AppImage"
 UPINFO="gh-releases-zsync|$(echo $GITHUB_REPOSITORY | tr '/' '|')|continuous|*$ARCH.AppImage.zsync"
@@ -29,7 +29,7 @@ mv ./usr/bin/lib ./usr/lib
 
 wget "$DESKTOP" -O ./"$APP".desktop
 wget "$ICON" -O ./deadbeef.svg
-export VERSION="$(echo "$url" | awk -F"_" '{print $2}')"
+sed -i 's/DeaDBeeF/DeaDBeeF Nightly/g' ./"$APP".desktop
 cp ./"$APP".desktop ./usr/share/applications
 
 # Deploy all libs
