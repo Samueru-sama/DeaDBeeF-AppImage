@@ -147,8 +147,15 @@ if [ ! -d "$FFMPEG_INSTALL_DIR/lib" ]; then
 	make install
 fi
 
+# Map arch names (uname -m format → static-deps directory format)
+case $ARCH in
+	x86_64)  STATIC_DEPS_ARCH="x86-64"  ;;
+	aarch64) STATIC_DEPS_ARCH="aarch64" ;;
+	*)       STATIC_DEPS_ARCH="$ARCH"   ;;
+esac
+
 # Set up build environment
-STATIC_DEPS=$SRC_DIR/static-deps/lib-$ARCH
+STATIC_DEPS=$SRC_DIR/static-deps/lib-$STATIC_DEPS_ARCH
 CONFIGURE_FLAGS=--build=$ARCH-unknown-linux-gnu
 export STATIC_DEPS
 export CFLAGS="\
@@ -175,12 +182,7 @@ cd "$SRC_DIR"
 	$CONFIGURE_FLAGS     \
 	--disable-gtk2       \
 	--prefix=/usr
-
-# Build
 make -j"$(nproc)"
-
-# Install to staging directory
-rm -rf "$INSTALL_DIR"
 make install DESTDIR="$INSTALL_DIR"
 
 # Move into AppDir structure
@@ -194,3 +196,6 @@ cp -v  "$STATIC_DEPS"/lib/libcurl.so*          ./AppDir/bin/
 cp -v  "$STATIC_DEPS"/lib/libmbed*             ./AppDir/bin/
 
 chmod +x ./AppDir/bin/deadbeef
+
+# Portable mode marker (triggers /proc/self/exe plugin detection)
+cp -v "$INSTALL_DIR"/usr/share/icons/hicolor/48x48/apps/deadbeef.png ./AppDir/bin/
