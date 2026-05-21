@@ -174,15 +174,13 @@ CONFIGURE_FLAGS=--build=$ARCH-unknown-linux-gnu
 
 # Move into AppDir structure
 mkdir -p ./AppDir/bin/plugins
-cp -v  "$INSTALL_DIR"/usr/bin/deadbeef         ./AppDir/bin/
-cp -vr "$INSTALL_DIR"/usr/lib/deadbeef/*       ./AppDir/bin/plugins/
-cp -vr "$INSTALL_DIR"/usr/share                ./AppDir/bin/
-cp -v  "$STATIC_DEPS"/lib/libBlocksRuntime.so* ./AppDir/bin/
-cp -v  "$STATIC_DEPS"/lib/libdispatch.so*      ./AppDir/bin/
-cp -v  "$STATIC_DEPS"/lib/libcurl.so*          ./AppDir/bin/
-cp -v  "$STATIC_DEPS"/lib/libmbed*             ./AppDir/bin/
+cp -v  "$INSTALL_DIR"/usr/bin/deadbeef    ./AppDir/bin
+cp -vr "$INSTALL_DIR"/usr/lib/deadbeef/*  ./AppDir/bin/plugins
+cp -vr "$INSTALL_DIR"/usr/share           ./AppDir/bin
+cp -v  "$STATIC_DEPS"/lib/*.so*           ./AppDir/bin
+
 # Portable mode marker (triggers /proc/self/exe plugin detection)
-cp -v "$INSTALL_DIR"/usr/share/icons/hicolor/48x48/apps/deadbeef.png ./AppDir/bin/
+cp -v "$INSTALL_DIR"/usr/share/icons/hicolor/48x48/apps/deadbeef.png ./AppDir/bin
 
 find ./AppDir/bin -type f -name '*.so*' -exec strip {} \;
 
