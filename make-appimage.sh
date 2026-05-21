@@ -14,7 +14,6 @@ export DEPLOY_PIPEWIRE=1
 # Deploy dependencies
 quick-sharun \
 	./AppDir/bin/*    \
-	./AppDir/bin/*/*  \
 	/usr/bin/faac     \
 	/usr/bin/flac     \
 	/usr/bin/lame     \
