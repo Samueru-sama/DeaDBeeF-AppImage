@@ -34,6 +34,7 @@ pacman -Syu --noconfirm \
 	pipewire-jack  \
 	pulseaudio     \
 	vorbis-tools   \
+	wavpack        \
 	wget           \
 	yasm
 
@@ -45,15 +46,11 @@ pacman -Rsndd --noconfirm mesa # gtk3 app doesn't need mesa
 
 echo "Building deadbeef..."
 echo "---------------------------------------------------------------"
-
-# Clean and setup build directory
 rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
-
-# Clone upstream source
 git clone https://github.com/DeaDBeeF-Player/deadbeef.git "$SRC_DIR"
 
-# Build ffmpeg 4.4 statically (in subshell to preserve CWD)
+# Build ffmpeg 4.4 statically
 FFMPEG_INSTALL_DIR=$BUILD_DIR/ffmpeg-static
 if [ ! -d "$FFMPEG_INSTALL_DIR"/lib ]; then
 	FFMPEG_BUILD_DIR="$BUILD_DIR/ffmpeg-4.4"
@@ -122,18 +119,15 @@ if [ ! -d "$FFMPEG_INSTALL_DIR"/lib ]; then
 	)
 fi
 
-# Map arch names (uname -m format → static-deps directory format)
+# Build deadbeef
 case $ARCH in
 	x86_64)  STATIC_DEPS_ARCH="x86-64"  ;;
 	aarch64) STATIC_DEPS_ARCH="aarch64" ;;
 	*)       STATIC_DEPS_ARCH="$ARCH"   ;;
 esac
-
-# Set up absolute paths for staging
 STATIC_DEPS=$SRC_DIR/static-deps/lib-$STATIC_DEPS_ARCH
 CONFIGURE_FLAGS=--build=$ARCH-unknown-linux-gnu
 
-# Build deadbeef in a subshell to preserve CWD for AppDir staging
 (
 	cd "$SRC_DIR"
 	if [ "$DEVEL_RELEASE" = true ]; then
