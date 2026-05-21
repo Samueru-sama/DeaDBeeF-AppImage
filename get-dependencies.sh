@@ -174,7 +174,11 @@ mkdir -p ./AppDir/bin/plugins
 cp -v  "$INSTALL_DIR"/usr/bin/deadbeef    ./AppDir/bin
 cp -vr "$INSTALL_DIR"/usr/lib/deadbeef/*  ./AppDir/bin/plugins
 cp -vr "$INSTALL_DIR"/usr/share           ./AppDir/bin
-cp -v  "$STATIC_DEPS"/lib/*.so*           ./AppDir/bin || : # aarch64 has no libs here
+# aarch64 has no libs here
+cp -v  "$STATIC_DEPS"/lib/libBlocks*.so*  ./AppDir/bin || :
+cp -v  "$STATIC_DEPS"/lib/libdispatch.so* ./AppDir/bin || :
+cp -v  "$STATIC_DEPS"/lib/libcurl.so*     ./AppDir/bin || :
+cp -v  "$STATIC_DEPS"/lib/libmbed*        ./AppDir/bin || :
 
 # Portable mode marker (triggers /proc/self/exe plugin detection)
 cp -v "$INSTALL_DIR"/usr/share/icons/hicolor/48x48/apps/deadbeef.png ./AppDir/bin
