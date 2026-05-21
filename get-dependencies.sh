@@ -140,19 +140,16 @@ CONFIGURE_FLAGS=--build=$ARCH-unknown-linux-gnu
 		git checkout "$TAG"
 		DEADBEEF_VERSION="$TAG"
 	fi
-
+	git submodule update --init --recursive
+	
 	echo "$DEADBEEF_VERSION" > ~/version
 	echo "m4_define([DEADBEEF_VERSION], [$DEADBEEF_VERSION])" > ./build_data/version.m4
-
-	# Initialize submodules (external plugins)
-	git submodule update --init --recursive
 
 	# Download static-deps for headers only
 	STATICDEPS_URL="http://sourceforge.net/projects/deadbeef/files/staticdeps/ddb-static-deps-latest.tar.bz2/download"
 	mkdir -p static-deps
 	wget "$STATICDEPS_URL" -O "$BUILD_DIR/ddb-static-deps.tar.bz2"
 	tar jxf "$BUILD_DIR/ddb-static-deps.tar.bz2" -C static-deps
-
 	# Remove static libs from static-deps (incompatible glibc symbol versions)
 	find static-deps -name "*.a" -delete
 
@@ -177,7 +174,7 @@ mkdir -p ./AppDir/bin/plugins
 cp -v  "$INSTALL_DIR"/usr/bin/deadbeef    ./AppDir/bin
 cp -vr "$INSTALL_DIR"/usr/lib/deadbeef/*  ./AppDir/bin/plugins
 cp -vr "$INSTALL_DIR"/usr/share           ./AppDir/bin
-cp -v  "$STATIC_DEPS"/lib/*.so*           ./AppDir/bin
+cp -v  "$STATIC_DEPS"/lib/*.so*           ./AppDir/bin || : # aarch64 has no libs here
 
 # Portable mode marker (triggers /proc/self/exe plugin detection)
 cp -v "$INSTALL_DIR"/usr/share/icons/hicolor/48x48/apps/deadbeef.png ./AppDir/bin
