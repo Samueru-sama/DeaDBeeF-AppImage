@@ -184,6 +184,6 @@ cp -v  "$STATIC_DEPS"/lib/libmbed*             ./AppDir/bin/
 # Portable mode marker (triggers /proc/self/exe plugin detection)
 cp -v "$INSTALL_DIR"/usr/share/icons/hicolor/48x48/apps/deadbeef.png ./AppDir/bin/
 
-find ./AppDir-new/bin -type f -name '*.so*' -exec strip {} \;
+find ./AppDir/bin -type f -name '*.so*' -exec strip {} \;
 
 chmod +x ./AppDir/bin/deadbeef
