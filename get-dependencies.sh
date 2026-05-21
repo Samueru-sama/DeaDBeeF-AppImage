@@ -22,6 +22,7 @@ pacman -Syu --noconfirm \
 	intltool       \
 	jansson        \
 	lame           \
+	libdispatch    \
 	libtool        \
 	libxss         \
 	make           \
