@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -ex
 
 ARCH=$(uname -m)
 BUILD_DIR=/tmp/deadbeef-build
@@ -185,12 +185,12 @@ make install DESTDIR="$INSTALL_DIR"
 
 # Move into AppDir structure
 mkdir -p ./AppDir/bin/plugins
-cp -v  "$INSTALL_DIR/usr/bin/deadbeef"         ./AppDir/bin/
-cp -vr "$INSTALL_DIR/usr/lib/deadbeef"/*       ./AppDir/bin/plugins/
-cp -vr "$INSTALL_DIR/usr/share"                ./AppDir/bin/
-cp -vr "$STATIC_DEPS/lib/libBlocksRuntime.so"* ./AppDir/bin/
-cp -vr "$STATIC_DEPS/lib/libdispatch.so"*      ./AppDir/bin/
-cp -vr "$STATIC_DEPS/lib/libcurl.so"*          ./AppDir/bin/
-cp -vr "$STATIC_DEPS/lib/libmbed"*             ./AppDir/bin/
+cp -v  "$INSTALL_DIR"/usr/bin/deadbeef         ./AppDir/bin/
+cp -vr "$INSTALL_DIR"/usr/lib/deadbeef/*       ./AppDir/bin/plugins/
+cp -vr "$INSTALL_DIR"/usr/share                ./AppDir/bin/
+cp -v  "$STATIC_DEPS"/lib/libBlocksRuntime.so* ./AppDir/bin/
+cp -v  "$STATIC_DEPS"/lib/libdispatch.so*      ./AppDir/bin/
+cp -v  "$STATIC_DEPS"/lib/libcurl.so*          ./AppDir/bin/
+cp -v  "$STATIC_DEPS"/lib/libmbed*             ./AppDir/bin/
 
 chmod +x ./AppDir/bin/deadbeef
