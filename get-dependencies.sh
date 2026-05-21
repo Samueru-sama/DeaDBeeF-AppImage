@@ -15,6 +15,7 @@ pacman -Syu --noconfirm \
 	automake       \
 	clang          \
 	faac           \
+	faad2          \
 	ffmpeg         \
 	flac           \
 	git            \
